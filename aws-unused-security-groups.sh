@@ -5,13 +5,13 @@
 #license: GPL3.0
 
 #initialize files
-> sg-all.txt
-> sg-used-default.txt
-> sg-used-ec2.txt
-> sg-used-eni.txt
-> sg-used-elb.txt
-> sg-used-rds.txt
-> sg-unused-final.txt
+true> sg-all.txt
+true> sg-used-default.txt
+true> sg-used-ec2.txt
+true> sg-used-eni.txt
+true> sg-used-elb.txt
+true> sg-used-rds.txt
+true> sg-unused-final.txt
 
 printf "\nlist unused security groups in all regions of an AWS account\n"
 
