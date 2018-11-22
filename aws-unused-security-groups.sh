@@ -80,10 +80,10 @@ comm -23 sg-all-sorted.txt sg-used-sorted.txt >sg-unused.txt
 wc -l sg-unused.txt
 
 printf "\nstep 9. get the descriptions of the unused security groups "
-while IFS=$'\t' read -r region sg
+while IFS=" " read -r region sg
 do
   description=$(aws ec2 describe-security-groups --region $region --group-ids $sg | jq --raw-output '.SecurityGroups[].Description'); 
-  printf "$region\t$sg\t$description\n">>sg-unused-final.txt; printf ".";
+  printf "%s\t%s\t%s\n" "$region $sg $description">>sg-unused-final.txt; printf ".";
 done <sg-unused.txt
 
 more sg-unused-final.txt
