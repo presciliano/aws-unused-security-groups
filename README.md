@@ -1,5 +1,5 @@
 # aws-unused-security-groups
-Bash script to identify unused or orphaned AWS EC2 security groups
+Bash script to identify unused or orphaned AWS EC2 security groups in all regions and VPCs
 
 # Prerequisites
 1. Install and configure [awscli](https://docs.aws.amazon.com/cli/latest/userguide/installing.html)
