@@ -96,4 +96,5 @@ do
   printf "%s\t%s\t%s\n" "$region" "$sg" "$description">>sg-unused-final.txt; printf "-";
 done <sg-unused.txt
 
+printf "\n";
 more sg-unused-final.txt
