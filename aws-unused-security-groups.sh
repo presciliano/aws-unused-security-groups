@@ -1,7 +1,7 @@
 #!/bin/bash
 #purpose: list unused security groups
 #author: prex, nov 2018
-#version: 1.0a
+#version: 1.0l
 #license: GPL3.0
 
 #initialize files
@@ -11,6 +11,7 @@ true> sg-used-ec2.txt
 true> sg-used-eni.txt
 true> sg-used-elb.txt
 true> sg-used-rds.txt
+true> sg-used-lambda.txt
 true> sg-unused-final.txt
 
 printf "\nlist unused security groups in all regions of an AWS account\n"
@@ -70,16 +71,25 @@ for region in $(aws ec2 describe-regions | jq --raw-output '.Regions[].RegionNam
 done
 wc -l sg-used-rds.txt
 
-printf "\nstep 7: generate a single list of unique used security groups "
+printf "\nstep 7: list security groups associated with lambda functions "
+for region in $(aws ec2 describe-regions | jq --raw-output '.Regions[].RegionName'); do
+  printf "*";	
+  for sg in $(aws lambda list-functions --region $region | jq --raw-output '.Functions[].VpcConfig.SecurityGroupIds[]?'); do
+    printf "%s\t%s\n" "$region" "$sg">>sg-used-lambda.txt; printf ".";
+  done;
+done
+wc -l sg-used-lambda.txt
+
+printf "\nstep 8: generate a single list of unique used security groups "
 sort sg-used-* | uniq >sg-used-sorted.txt
 sort sg-all.txt | uniq >sg-all-sorted.txt
 wc -l sg-used-sorted.txt
 
-printf "\nstep 8: generate the list of unused security groups "
+printf "\nstep 9: generate the list of unused security groups "
 comm -23 sg-all-sorted.txt sg-used-sorted.txt >sg-unused.txt
 wc -l sg-unused.txt
 
-printf "\nstep 9. get the descriptions of the unused security groups "
+printf "\nstep 10. get the descriptions of the unused security groups "
 while IFS=$'\t' read -r region sg
 do
   description=$(aws ec2 describe-security-groups --region $region --group-ids $sg | jq --raw-output '.SecurityGroups[].Description'); 
