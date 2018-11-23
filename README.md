@@ -6,9 +6,11 @@ Bash script to identify unused or orphaned AWS EC2 security groups in all region
 2. Make sure you have the accordingly IAM permissions
 
 # Usage
-1. run the script
+1. run the script `aws-unused-security-groups.sh`
 2. a file named `sg-unused-final.txt` will be created
-3. review carefully the list of security groups before deleting
+3. review carefully the generated used list of security groups
+4. (recommended) run the script `aws-backup-security-groups.sh <sg-unused-final.txt` to backup the security groups configurations
+5. delete the unused security groups
 
 ## Authors
 - Presciliano Neto
